@@ -145,6 +145,59 @@ class ApiController extends Controller
     }
 
 
+    public function getUserProfile(Request $request)
+    {
+        // Получаем telegram_id из запроса
+        $telegramId = $request->input('telegram_id');
+
+        // Проверяем, передан ли telegram_id
+        if (!$telegramId) {
+            return response()->json([
+                'message' => 'Telegram ID is required'
+            ], 400);
+        }
+
+        // Ищем пользователя с данным telegram_id
+        $user = User::where('telegram_id', $telegramId)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User with this Telegram ID not found'
+            ], 404);
+        }
+
+        // Получаем достижения пользователя
+        $userAchievements = $user->achievements()->get();
+        $achievementsCount = $userAchievements->count();
+
+        // Получаем общее количество достижений, которые существуют
+        $totalAchievements = Achievement::count();
+
+        // Формируем список достижений
+        $achievementsList = $userAchievements->map(function ($achievement) {
+            return [
+                'name' => $achievement->name,
+                'description' => $achievement->description,
+                'achieved_at' => $achievement->pivot->achieved_at
+            ];
+        });
+
+        // Формируем ответ с данными для личного кабинета
+        return response()->json([
+            'message' => 'User profile retrieved successfully',
+            'profile' => [
+                'telegram_id' => $user->telegram_id,
+                'name' => $user->name,
+                'created_at' => $user->created_at, // Опционально
+                'achievements' => $achievementsList,
+                'achievements_count' => "Ачивок получено {$achievementsCount} из {$totalAchievements}",
+            ]
+        ], 200);
+    }
+
+
+
+
 
 
 

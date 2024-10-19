@@ -42,4 +42,7 @@ Route::post('/quiz/check-answers', [QuestionController::class, 'checkAnswers']);
 
 Route::get('/user-achievements', [QuestionController::class, 'getUserAchievements']);
 
-    Route::post('/create-achievement', [ApiController::class, 'createAchievement']);
+Route::post('/create-achievement', [ApiController::class, 'createAchievement']);
+
+Route::get('/user-profile', [ApiController::class, 'getUserProfile']);
+
