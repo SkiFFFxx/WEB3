@@ -11,6 +11,7 @@ Route::get('/user', function (Request $request) {
 
 
 // Создание пользователя
+// Я написал это в код для коммита new
 Route::post('/users', [ApiController::class, 'createUser']);
 
 // Получение списка пользователей
