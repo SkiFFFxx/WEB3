@@ -12,6 +12,7 @@ class QuestionController extends Controller
 {
     public function createQuestion(Request $request)
     {
+        #sdsdsd
         $validated = $request->validate([
             'question' => 'required|string',
             'option1' => 'required|string',
