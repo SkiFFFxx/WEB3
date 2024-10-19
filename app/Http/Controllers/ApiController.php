@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
+use App\Models\Achievement;
 
 class ApiController extends Controller
 {
@@ -117,6 +118,34 @@ class ApiController extends Controller
             return response()->json(['message' => 'Server error', 'error' => $e->getMessage()], 500);
         }
     }
+
+
+    public function createAchievement()
+    {
+        // Проверяем, существует ли достижение с таким названием
+        $achievement = Achievement::where('name', 'First Time Access Questions')->first();
+
+        if ($achievement) {
+            return response()->json([
+                'message' => 'Achievement already exists',
+                'achievement' => $achievement
+            ], 200);
+        }
+
+        // Создаем достижение, если оно не существует
+        $achievement = Achievement::create([
+            'name' => 'First Time Access Questions',
+            'description' => 'Достижение за первое открытие вопросов'
+        ]);
+
+        return response()->json([
+            'message' => 'Achievement created successfully',
+            'achievement' => $achievement
+        ], 201);
+    }
+
+
+
 
 
 

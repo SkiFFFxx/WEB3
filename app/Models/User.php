@@ -46,4 +46,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function achievements()
+    {
+        return $this->belongsToMany(Achievement::class, 'user_achievements')
+            ->withPivot('achieved_at') // Указываем, что нужно загружать achieved_at
+            ->withTimestamps();
+    }
+
 }
